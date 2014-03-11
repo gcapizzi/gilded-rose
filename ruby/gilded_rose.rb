@@ -6,24 +6,22 @@ class GildedRose
   def update_quality
     @items.each do |item|
       if !item.aged_brie? && !item.backstage_passes?
-        if item.quality > 0
           if !item.sulfuras?
-            item.quality = item.quality - 1
+            item.decrement_quality
           end
-        end
       else
         if item.quality < 50
           item.quality = item.quality + 1
-          if item.backstage_passes?
-            if item.sell_in < 11
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
+        end
+        if item.backstage_passes?
+          if item.sell_in < 11
+            if item.quality < 50
+              item.quality = item.quality + 1
             end
-            if item.sell_in < 6
-              if item.quality < 50
-                item.quality = item.quality + 1
-              end
+          end
+          if item.sell_in < 6
+            if item.quality < 50
+              item.quality = item.quality + 1
             end
           end
         end
@@ -34,11 +32,9 @@ class GildedRose
       if item.sell_in < 0
         if !item.aged_brie?
           if !item.backstage_passes?
-            if item.quality > 0
               if !item.sulfuras?
-                item.quality = item.quality - 1
+                item.decrement_quality
               end
-            end
           else
             item.quality = item.quality - item.quality
           end
@@ -79,5 +75,9 @@ class Item
 
   def sulfuras?
     name == SULFURAS
+  end
+
+  def decrement_quality
+    @quality -= 1 if @quality > 0
   end
 end
