@@ -63,12 +63,7 @@ class Item
   end
 
   def update_quality
-    if aged_brie?
-      decrement_sell_in
-
-      increment_quality
-      increment_quality if sell_in < 0
-    elsif backstage_passes?
+    if backstage_passes?
       decrement_sell_in
 
       increment_quality
@@ -86,6 +81,14 @@ class Item
   end
 end
 
-class AgedBrieItem < Item; end
+class AgedBrieItem < Item
+  def update_quality
+    decrement_sell_in
+
+    increment_quality
+    increment_quality if sell_in < 0
+  end
+end
+
 class BackstagePassesItem < Item; end
 class SulfurasItem < Item; end
