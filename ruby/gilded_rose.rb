@@ -98,4 +98,11 @@ class SulfurasItem < Item
   end
 end
 
-class ConjuredItem < Item; end
+class ConjuredItem < Item
+  def update_quality
+    decrement_sell_in
+
+    2.times { decrement_quality }
+    2.times { decrement_quality } if sell_in < 0
+  end
+end

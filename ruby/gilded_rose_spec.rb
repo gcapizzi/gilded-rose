@@ -96,14 +96,15 @@ describe GildedRose do
     context 'when the product is Conjured' do
       let(:item) { Item.from('Conjured something', 10, 10) }
 
-      xit 'lowers quality twice as fast' do
+      it 'lowers quality twice as fast, sell in as usual' do
         expect(item.quality).to eq(8)
+        expect(item.sell_in).to eq(9)
       end
 
       context 'when the sell by date has passed' do
         let(:item) { Item.from('Conjured something', 0, 10) }
 
-        xit 'lowers quality four times as fast' do
+        it 'lowers quality four times as fast' do
           expect(item.quality).to eq(6)
         end
       end
