@@ -12,17 +12,15 @@ class GildedRose
       else
         item.increment_quality
         if item.backstage_passes?
-          if item.sell_in < 11
-            item.increment_quality
-          end
-          if item.sell_in < 6
-            item.increment_quality
-          end
+          item.increment_quality if item.sell_in < 11
+          item.increment_quality if item.sell_in < 6
         end
       end
+
       if !item.sulfuras?
         item.sell_in = item.sell_in - 1
       end
+
       if item.sell_in < 0
         if !item.aged_brie?
           if !item.backstage_passes?
