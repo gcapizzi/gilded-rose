@@ -35,8 +35,9 @@ describe GildedRose do
     context 'when the product is Aged Brie' do
       let(:item) { Item.from('Aged Brie', 10, 10) }
 
-      it 'increments quality' do
+      it 'increments quality but lower sell in' do
         expect(item.quality).to eq(11)
+        expect(item.sell_in).to eq(9)
       end
 
       context 'when the quality is 50' do
@@ -61,8 +62,9 @@ describe GildedRose do
       context 'when the sell_in is greater than 10' do
         let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 20, 10) }
 
-        it 'increases quality' do
+        it 'increases quality but lowers sell in' do
           expect(item.quality).to eq(11)
+          expect(item.sell_in).to eq(19)
         end
       end
 
