@@ -1,24 +1,20 @@
 class GildedRose
-  AGED_BRIE = 'Aged Brie'
-  BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
-  SULFURAS = 'Sulfuras, Hand of Ragnaros'
-
   def initialize(items)
     @items = items
   end
 
   def update_quality
     @items.each do |item|
-      if item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES
+      if !item.aged_brie? && !item.backstage_passes?
         if item.quality > 0
-          if item.name != SULFURAS
+          if !item.sulfuras?
             item.quality = item.quality - 1
           end
         end
       else
         if item.quality < 50
           item.quality = item.quality + 1
-          if item.name == BACKSTAGE_PASSES
+          if item.backstage_passes?
             if item.sell_in < 11
               if item.quality < 50
                 item.quality = item.quality + 1
@@ -32,14 +28,14 @@ class GildedRose
           end
         end
       end
-      if item.name != SULFURAS
+      if !item.sulfuras?
         item.sell_in = item.sell_in - 1
       end
       if item.sell_in < 0
-        if item.name != AGED_BRIE
-          if item.name != BACKSTAGE_PASSES
+        if !item.aged_brie?
+          if !item.backstage_passes?
             if item.quality > 0
-              if item.name != SULFURAS
+              if !item.sulfuras?
                 item.quality = item.quality - 1
               end
             end
@@ -57,6 +53,10 @@ class GildedRose
 end
 
 class Item
+  AGED_BRIE = 'Aged Brie'
+  BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
+  SULFURAS = 'Sulfuras, Hand of Ragnaros'
+
   attr_accessor :name, :sell_in, :quality
 
   def initialize(name, sell_in, quality)
@@ -67,5 +67,17 @@ class Item
 
   def to_s
     "#{@name}, #{@sell_in}, #{@quality}"
+  end
+
+  def aged_brie?
+    name == AGED_BRIE
+  end
+
+  def backstage_passes?
+    name == BACKSTAGE_PASSES
+  end
+
+  def sulfuras?
+    name == SULFURAS
   end
 end
