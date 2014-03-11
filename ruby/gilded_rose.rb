@@ -7,37 +7,23 @@ class GildedRose
     @items.each do |item|
       if item.aged_brie?
         item.decrement_sell_in
+
+        item.increment_quality
+        item.increment_quality if item.sell_in < 0
       elsif item.backstage_passes?
         item.decrement_sell_in
+
+        item.increment_quality
+        item.increment_quality if item.sell_in < 11
+        item.increment_quality if item.sell_in < 6
+        item.reset_quality if item.sell_in < 0
       elsif item.sulfuras?
+        # nope
       else
         item.decrement_sell_in
-      end
 
-      if !item.aged_brie? && !item.backstage_passes?
-        if !item.sulfuras?
-          item.decrement_quality
-        end
-      else
-        item.increment_quality
-        if item.backstage_passes?
-          item.increment_quality if item.sell_in < 11
-          item.increment_quality if item.sell_in < 6
-        end
-      end
-
-      if item.sell_in < 0
-        if !item.aged_brie?
-          if !item.backstage_passes?
-            if !item.sulfuras?
-              item.decrement_quality
-            end
-          else
-            item.reset_quality
-          end
-        else
-          item.increment_quality
-        end
+        item.decrement_quality
+        item.decrement_quality if item.sell_in < 0
       end
     end
   end
