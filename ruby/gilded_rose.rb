@@ -18,7 +18,7 @@ class GildedRose
       end
 
       if !item.sulfuras?
-        item.sell_in = item.sell_in - 1
+        item.decrement_sell_in
       end
 
       if item.sell_in < 0
@@ -77,5 +77,9 @@ class Item
 
   def reset_quality
     @quality = 0
+  end
+
+  def decrement_sell_in
+    @sell_in -= 1
   end
 end
