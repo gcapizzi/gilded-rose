@@ -63,14 +63,10 @@ class Item
   end
 
   def update_quality
-    if sulfuras?
-      # nope
-    else
-      decrement_sell_in
+    decrement_sell_in
 
-      decrement_quality
-      decrement_quality if sell_in < 0
-    end
+    decrement_quality
+    decrement_quality if sell_in < 0
   end
 end
 
@@ -94,4 +90,8 @@ class BackstagePassesItem < Item
   end
 end
 
-class SulfurasItem < Item; end
+class SulfurasItem < Item
+  def update_quality
+    # nope
+  end
+end
