@@ -10,84 +10,6 @@ describe GildedRose do
     it 'calls #update_quality on each item' do
       expect(item).to have_received(:update_quality)
     end
-
-    context 'when the product is Aged Brie' do
-      let(:item) { Item.from('Aged Brie', 10, 10) }
-
-      it 'increments quality but lower sell in' do
-        expect(item.quality).to eq(11)
-        expect(item.sell_in).to eq(9)
-      end
-
-      context 'when the quality is 50' do
-        let(:item) { Item.from('Aged Brie', 0, 50) }
-
-        it 'doesn\'t increment it further' do
-          expect(item.quality).to eq(50)
-        end
-      end
-    end
-
-    context 'when the product is Sulfuras, Hand of Ragnaros' do
-      let(:item) { Item.from('Sulfuras, Hand of Ragnaros', 10, 80) }
-
-      it 'doesn\'t decrease quality nor sell_in' do
-        expect(item.quality).to eq(80)
-        expect(item.sell_in).to eq(10)
-      end
-    end
-
-    context 'when the product is Backstage passes' do
-      context 'when the sell_in is greater than 10' do
-        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 20, 10) }
-
-        it 'increases quality but lowers sell in' do
-          expect(item.quality).to eq(11)
-          expect(item.sell_in).to eq(19)
-        end
-      end
-
-      context 'when the sell_in is less than or equal to 10' do
-        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 10, 10) }
-
-        it 'increases quality by 2' do
-          expect(item.quality).to eq(12)
-        end
-      end
-
-      context 'when the sell_in is less than or equal to 5' do
-        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 5, 10) }
-
-        it 'increases quality by 3' do
-          expect(item.quality).to eq(13)
-        end
-      end
-
-      context 'when the sell_in is less than or equal to 0' do
-        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 0, 10) }
-
-        it 'drops quality to 0' do
-          expect(item.quality).to eq(0)
-        end
-      end
-    end
-
-    context 'when the product is Conjured' do
-      let(:item) { Item.from('Conjured something', 10, 10) }
-
-      it 'lowers quality twice as fast, sell in as usual' do
-        expect(item.quality).to eq(8)
-        expect(item.sell_in).to eq(9)
-      end
-
-      context 'when the sell by date has passed' do
-        let(:item) { Item.from('Conjured something', 0, 10) }
-
-        it 'lowers quality four times as fast' do
-          expect(item.quality).to eq(6)
-        end
-      end
-    end
   end
 end
 
@@ -169,6 +91,98 @@ describe Item do
 
       it 'lowers quality twice as fast' do
         expect(subject.quality).to eq(8)
+      end
+    end
+  end
+end
+
+describe AgedBrieItem do
+  subject { AgedBrieItem.new('Aged Brie', 10, 10) }
+
+  describe '#update_quality' do
+    before { subject.update_quality }
+
+    it 'increments quality but lower sell in' do
+      expect(subject.quality).to eq(11)
+      expect(subject.sell_in).to eq(9)
+    end
+
+    context 'when the quality is 50' do
+      subject { AgedBrieItem.new('Aged Brie', 0, 50) }
+
+      it 'doesn\'t increment it further' do
+        expect(subject.quality).to eq(50)
+      end
+    end
+  end
+end
+
+describe SulfurasItem do
+  subject { SulfurasItem.new('Sulfuras, Hand of Ragnaros', 10, 80) }
+
+  describe '#update_quality' do
+    before { subject.update_quality }
+
+    it 'doesn\'t decrease quality nor sell_in' do
+      expect(subject.quality).to eq(80)
+      expect(subject.sell_in).to eq(10)
+    end
+  end
+end
+
+describe BackstagePassesItem do
+  subject { BackstagePassesItem.new('Backstage passes to a TAFKAL80ETC concert', 20, 10) }
+
+  describe '#update_quality' do
+    before { subject.update_quality }
+
+    it 'increases quality but lowers sell in' do
+      expect(subject.quality).to eq(11)
+      expect(subject.sell_in).to eq(19)
+    end
+
+    context 'when the sell_in is less than or equal to 10' do
+      subject { BackstagePassesItem.new('Backstage passes to a TAFKAL80ETC concert', 10, 10) }
+
+      it 'increases quality by 2' do
+        expect(subject.quality).to eq(12)
+      end
+    end
+
+    context 'when the sell_in is less than or equal to 5' do
+      subject { BackstagePassesItem.new('Backstage passes to a TAFKAL80ETC concert', 5, 10) }
+
+      it 'increases quality by 3' do
+        expect(subject.quality).to eq(13)
+      end
+    end
+
+    context 'when the sell_in is less than or equal to 0' do
+      subject { BackstagePassesItem.new('Backstage passes to a TAFKAL80ETC concert', 0, 10) }
+
+      it 'drops quality to 0' do
+        expect(subject.quality).to eq(0)
+      end
+    end
+  end
+end
+
+describe ConjuredItem do
+  subject { ConjuredItem.new('Conjured something', 10, 10) }
+
+  describe '#update_quality' do
+    before { subject.update_quality }
+
+    it 'lowers quality twice as fast, sell in as usual' do
+      expect(subject.quality).to eq(8)
+      expect(subject.sell_in).to eq(9)
+    end
+
+    context 'when the sell by date has passed' do
+      subject { ConjuredItem.new('Conjured something', 0, 10) }
+
+      it 'lowers quality four times as fast' do
+        expect(subject.quality).to eq(6)
       end
     end
   end
