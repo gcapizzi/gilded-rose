@@ -27,6 +27,13 @@ class Item
     "#{@name}, #{@sell_in}, #{@quality}"
   end
 
+  def self.from(name, sell_in, quality)
+    return AgedBrieItem.new(name, sell_in, quality) if name == AGED_BRIE
+    return BackstagePassesItem.new(name, sell_in, quality) if name == BACKSTAGE_PASSES
+    return SulfurasItem.new(name, sell_in, quality) if name == SULFURAS
+    Item.new(name, sell_in, quality)
+  end
+
   def aged_brie?
     name == AGED_BRIE
   end
@@ -78,3 +85,7 @@ class Item
     end
   end
 end
+
+class AgedBrieItem < Item; end
+class BackstagePassesItem < Item; end
+class SulfurasItem < Item; end

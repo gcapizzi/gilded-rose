@@ -2,7 +2,7 @@ require_relative 'gilded_rose'
 
 describe GildedRose do
   describe '#update_quality' do
-    let(:item) { Item.new('foo', 10, 20) }
+    let(:item) { Item.from('foo', 10, 20) }
     subject { GildedRose.new [item] }
 
     before { subject.update_quality }
@@ -17,7 +17,7 @@ describe GildedRose do
     end
 
     context 'when the quality is 0' do
-      let(:item) { Item.new('foo', 10, 0) }
+      let(:item) { Item.from('foo', 10, 0) }
 
       it 'doesn\'t lower it further' do
         expect(item.quality).to eq(0)
@@ -25,7 +25,7 @@ describe GildedRose do
     end
 
     context 'when the sell by date has passed' do
-      let(:item) { Item.new('foo', 0, 10) }
+      let(:item) { Item.from('foo', 0, 10) }
 
       it 'lowers quality twice as fast' do
         expect(item.quality).to eq(8)
@@ -33,14 +33,14 @@ describe GildedRose do
     end
 
     context 'when the product is Aged Brie' do
-      let(:item) { Item.new('Aged Brie', 10, 10) }
+      let(:item) { Item.from('Aged Brie', 10, 10) }
 
       it 'increments quality' do
         expect(item.quality).to eq(11)
       end
 
       context 'when the quality is 50' do
-        let(:item) { Item.new('Aged Brie', 0, 50) }
+        let(:item) { Item.from('Aged Brie', 0, 50) }
 
         it 'doesn\'t increment it further' do
           expect(item.quality).to eq(50)
@@ -49,7 +49,7 @@ describe GildedRose do
     end
 
     context 'when the product is Sulfuras, Hand of Ragnaros' do
-      let(:item) { Item.new('Sulfuras, Hand of Ragnaros', 10, 80) }
+      let(:item) { Item.from('Sulfuras, Hand of Ragnaros', 10, 80) }
 
       it 'doesn\'t decrease quality nor sell_in' do
         expect(item.quality).to eq(80)
@@ -59,7 +59,7 @@ describe GildedRose do
 
     context 'when the product is Backstage passes' do
       context 'when the sell_in is greater than 10' do
-        let(:item) { Item.new('Backstage passes to a TAFKAL80ETC concert', 20, 10) }
+        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 20, 10) }
 
         it 'increases quality' do
           expect(item.quality).to eq(11)
@@ -67,7 +67,7 @@ describe GildedRose do
       end
 
       context 'when the sell_in is less than or equal to 10' do
-        let(:item) { Item.new('Backstage passes to a TAFKAL80ETC concert', 10, 10) }
+        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 10, 10) }
 
         it 'increases quality by 2' do
           expect(item.quality).to eq(12)
@@ -75,7 +75,7 @@ describe GildedRose do
       end
 
       context 'when the sell_in is less than or equal to 5' do
-        let(:item) { Item.new('Backstage passes to a TAFKAL80ETC concert', 5, 10) }
+        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 5, 10) }
 
         it 'increases quality by 3' do
           expect(item.quality).to eq(13)
@@ -83,7 +83,7 @@ describe GildedRose do
       end
 
       context 'when the sell_in is less than or equal to 0' do
-        let(:item) { Item.new('Backstage passes to a TAFKAL80ETC concert', 0, 10) }
+        let(:item) { Item.from('Backstage passes to a TAFKAL80ETC concert', 0, 10) }
 
         it 'drops quality to 0' do
           expect(item.quality).to eq(0)
@@ -92,14 +92,14 @@ describe GildedRose do
     end
 
     context 'when the product is Conjured' do
-      let(:item) { Item.new('Conjured something', 10, 10) }
+      let(:item) { Item.from('Conjured something', 10, 10) }
 
       xit 'lowers quality twice as fast' do
         expect(item.quality).to eq(8)
       end
 
       context 'when the sell by date has passed' do
-        let(:item) { Item.new('Conjured something', 0, 10) }
+        let(:item) { Item.from('Conjured something', 0, 10) }
 
         xit 'lowers quality four times as fast' do
           expect(item.quality).to eq(6)
@@ -123,6 +123,37 @@ describe Item do
   describe '#to_s' do
     it 'returns a string representation of the item' do
       expect(subject.to_s).to eq('foo, 123, 456')
+    end
+  end
+
+  describe '.from' do
+    let(:name) { 'foo' }
+
+    subject { Item.from(name, 10, 20) }
+
+    it 'returns an Item' do
+      expect(subject).to be_an_instance_of(Item)
+    end
+
+    it 'sets name, sell_in and quality' do
+      expect(subject.name).to eq(name)
+      expect(subject.sell_in).to eq(10)
+      expect(subject.quality).to eq(20)
+    end
+
+    context 'when the item is Aged Brie' do
+      let(:name) { 'Aged Brie' }
+      it { should be_an_instance_of(AgedBrieItem) }
+    end
+
+    context 'when the item is Backstage Passes' do
+      let(:name) { 'Backstage passes to a TAFKAL80ETC concert' }
+      it { should be_an_instance_of(BackstagePassesItem) }
+    end
+
+    context 'when the item is Sulfuras' do
+      let(:name) { 'Sulfuras, Hand of Ragnaros' }
+      it { should be_an_instance_of(SulfurasItem) }
     end
   end
 end
