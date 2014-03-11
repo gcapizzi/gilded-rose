@@ -30,7 +30,7 @@ class GildedRose
               item.decrement_quality
             end
           else
-            item.quality = item.quality - item.quality
+            item.reset_quality
           end
         else
           item.increment_quality
@@ -75,5 +75,9 @@ class Item
 
   def increment_quality
     @quality += 1 if @quality < 50
+  end
+
+  def reset_quality
+    @quality = 0
   end
 end
