@@ -9,7 +9,7 @@ class GildedRose
 
   def update_quality
     @items.each do |item|
-      if item.name != AGED_BRIE and item.name != BACKSTAGE_PASSES
+      if item.name != AGED_BRIE && item.name != BACKSTAGE_PASSES
         if item.quality > 0
           if item.name != SULFURAS
             item.quality = item.quality - 1
