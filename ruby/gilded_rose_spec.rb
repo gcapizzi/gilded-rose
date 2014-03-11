@@ -159,8 +159,8 @@ describe Item do
     end
 
     context 'when the item is Conjured' do
-      let(:name){'Conjured something'}
-      it{should be_an_instance_of(ConjuredItem)}
+      let(:name) { 'Conjured something' }
+      it { should be_an_instance_of(ConjuredItem) }
     end
   end
 end
