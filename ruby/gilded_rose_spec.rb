@@ -147,7 +147,7 @@ describe Item do
     end
 
     context 'when the item is Backstage Passes' do
-      let(:name) { 'Backstage passes to a TAFKAL80ETC concert' }
+      let(:name) { 'Backstage passes to a Radiohead concert' }
       it { should be_an_instance_of(BackstagePassesItem) }
     end
 

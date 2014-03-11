@@ -12,7 +12,7 @@ end
 
 class Item
   AGED_BRIE = 'Aged Brie'
-  BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert'
+  BACKSTAGE_PASSES = /Backstage passes to a(n?) (.*) concert/
   SULFURAS = 'Sulfuras, Hand of Ragnaros'
 
   attr_accessor :name, :sell_in, :quality
@@ -29,7 +29,7 @@ class Item
 
   def self.from(name, sell_in, quality)
     return AgedBrieItem.new(name, sell_in, quality) if name == AGED_BRIE
-    return BackstagePassesItem.new(name, sell_in, quality) if name == BACKSTAGE_PASSES
+    return BackstagePassesItem.new(name, sell_in, quality) if name =~ BACKSTAGE_PASSES
     return SulfurasItem.new(name, sell_in, quality) if name == SULFURAS
     Item.new(name, sell_in, quality)
   end
