@@ -14,6 +14,7 @@ class Item
   AGED_BRIE = 'Aged Brie'
   BACKSTAGE_PASSES = /Backstage passes to a(n?) (.*) concert/
   SULFURAS = 'Sulfuras, Hand of Ragnaros'
+  CONJURED = /Conjured (.*)/
 
   attr_accessor :name, :sell_in, :quality
 
@@ -31,6 +32,7 @@ class Item
     return AgedBrieItem.new(name, sell_in, quality) if name == AGED_BRIE
     return BackstagePassesItem.new(name, sell_in, quality) if name =~ BACKSTAGE_PASSES
     return SulfurasItem.new(name, sell_in, quality) if name == SULFURAS
+    return ConjuredItem.new(name, sell_in, quality) if name =~ CONJURED
     Item.new(name, sell_in, quality)
   end
 
@@ -95,3 +97,5 @@ class SulfurasItem < Item
     # nope
   end
 end
+
+class ConjuredItem < Item; end

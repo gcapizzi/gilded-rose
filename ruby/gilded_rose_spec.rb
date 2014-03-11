@@ -155,5 +155,10 @@ describe Item do
       let(:name) { 'Sulfuras, Hand of Ragnaros' }
       it { should be_an_instance_of(SulfurasItem) }
     end
+
+    context 'when the item is Conjured' do
+      let(:name){'Conjured something'}
+      it{should be_an_instance_of(ConjuredItem)}
+    end
   end
 end
