@@ -1,13 +1,13 @@
-require File.join(File.dirname(__FILE__), 'gilded_rose')
+require_relative 'gilded_rose'
 
 describe GildedRose do
+  describe '#update_quality' do
+    let(:item) { Item.new('foo', 0, 0) }
 
-  describe "#update_quality" do
-    it "does not change the name" do
-      items = [Item.new("foo", 0, 0)]
-      GildedRose.new(items).update_quality()
-      items[0].name.should == "fixme"
+    subject { GildedRose.new [item] }
+
+    it 'does not change the name' do
+      expect { subject.update_quality }.not_to change { item.name }
     end
   end
-
 end
