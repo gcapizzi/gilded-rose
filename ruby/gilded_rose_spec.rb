@@ -2,34 +2,13 @@ require_relative 'gilded_rose'
 
 describe GildedRose do
   describe '#update_quality' do
-    let(:item) { Item.from('foo', 10, 20) }
+    let(:item) { double(Item, update_quality: nil) }
     subject { GildedRose.new [item] }
 
     before { subject.update_quality }
 
-    it 'does not change the name' do
-      expect(item.name).to eq('foo')
-    end
-
-    it 'lowers both sell_in and quality' do
-      expect(item.sell_in).to eq(9)
-      expect(item.quality).to eq(19)
-    end
-
-    context 'when the quality is 0' do
-      let(:item) { Item.from('foo', 10, 0) }
-
-      it 'doesn\'t lower it further' do
-        expect(item.quality).to eq(0)
-      end
-    end
-
-    context 'when the sell by date has passed' do
-      let(:item) { Item.from('foo', 0, 10) }
-
-      it 'lowers quality twice as fast' do
-        expect(item.quality).to eq(8)
-      end
+    it 'calls #update_quality on each item' do
+      expect(item).to have_received(:update_quality)
     end
 
     context 'when the product is Aged Brie' do
@@ -113,19 +92,19 @@ describe GildedRose do
 end
 
 describe Item do
-  subject { Item.new('foo', 123, 456) }
+  subject { Item.new('foo', 10, 20) }
 
   describe '#initialize' do
     it 'sets the item name, sell_in and quality' do
       expect(subject.name).to eq('foo')
-      expect(subject.sell_in).to eq(123)
-      expect(subject.quality).to eq(456)
+      expect(subject.sell_in).to eq(10)
+      expect(subject.quality).to eq(20)
     end
   end
 
   describe '#to_s' do
     it 'returns a string representation of the item' do
-      expect(subject.to_s).to eq('foo, 123, 456')
+      expect(subject.to_s).to eq('foo, 10, 20')
     end
   end
 
@@ -162,6 +141,35 @@ describe Item do
     context 'when the item is Conjured' do
       let(:name) { 'Conjured something' }
       it { should be_an_instance_of(ConjuredItem) }
+    end
+  end
+
+  describe '#update_quality' do
+    before { subject.update_quality }
+
+    it 'does not change the name' do
+      expect(subject.name).to eq('foo')
+    end
+
+    it 'lowers both sell_in and quality' do
+      expect(subject.sell_in).to eq(9)
+      expect(subject.quality).to eq(19)
+    end
+
+    context 'when the quality is 0' do
+      subject { Item.from('foo', 10, 0) }
+
+      it 'doesn\'t lower it further' do
+        expect(subject.quality).to eq(0)
+      end
+    end
+
+    context 'when the sell by date has passed' do
+      subject { Item.from('foo', 0, 10) }
+
+      it 'lowers quality twice as fast' do
+        expect(subject.quality).to eq(8)
+      end
     end
   end
 end
