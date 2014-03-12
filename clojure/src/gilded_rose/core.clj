@@ -46,13 +46,20 @@
     (dec-sell-in item)
     item))
 
+(defprotocol Item
+  (update [this]))
+
+(defrecord RegularItem [name sell-in quality]
+  Item
+  (update [this] (update-quality-for-item (update-sell-in-for-item this))))
+
 (defn update-quality
   [items]
-  (map (comp update-quality-for-item update-sell-in-for-item) items))
+  (map update items))
 
 (defn item
-  [item-name, sell-in, quality]
-  {:name item-name, :sell-in sell-in, :quality quality})
+  [item-name sell-in quality]
+  (RegularItem. item-name sell-in quality))
 
 (defn update-current-inventory
   []
