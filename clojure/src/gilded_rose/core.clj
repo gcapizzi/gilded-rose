@@ -1,12 +1,8 @@
 (ns gilded-rose.core)
 
-(defn has-name?
-  [name item]
-  (= name (:name item)))
-
-(def backstage-passes? (partial has-name? "Backstage passes to a TAFKAL80ETC concert"))
-(def aged-brie? (partial has-name? "Aged Brie"))
-(def sulfuras? (partial has-name? "Sulfuras, Hand of Ragnaros"))
+(defn backstage-passes? [name] (= name "Backstage passes to a TAFKAL80ETC concert"))
+(defn aged-brie? [name] (= name "Aged Brie"))
+(defn sulfuras? [name] (= name "Sulfuras, Hand of Ragnaros"))
 
 (defn dec-quality
   ([item]
@@ -28,30 +24,36 @@
   [item]
   (merge item {:sell-in (dec (:sell-in item))}))
 
-(defn update-quality-for-item
-  [item]
-  (cond
-    (backstage-passes? item) (cond (and (>= (:sell-in item) 5) (< (:sell-in item) 10)) (inc-quality item 2)
-                                   (and (>= (:sell-in item) 0) (< (:sell-in item) 5)) (inc-quality item 3)
-                                   (< (:sell-in item) 0) (reset-quality item)
-                                   :else (inc-quality item))
-    (aged-brie? item) (inc-quality item)
-    :else (if (< (:sell-in item) 0)
-            (dec-quality item 2)
-            (dec-quality item))))
-
-(defn update-sell-in-for-item
-  [item]
-  (if (not (sulfuras? item))
-    (dec-sell-in item)
-    item))
-
 (defprotocol Item
   (update [this]))
 
 (defrecord RegularItem [name sell-in quality]
   Item
-  (update [this] (update-quality-for-item (update-sell-in-for-item this))))
+  (update [this]
+    (let [item (dec-sell-in this)]
+      (if (< (:sell-in item) 0)
+        (dec-quality item 2)
+        (dec-quality item)))))
+
+(defrecord BackstagePassesItem [name sell-in quality]
+  Item
+  (update [this]
+    (let [item (dec-sell-in this)]
+      (cond (and (>= (:sell-in item) 5) (< (:sell-in item) 10)) (inc-quality item 2)
+            (and (>= (:sell-in item) 0) (< (:sell-in item) 5)) (inc-quality item 3)
+            (< (:sell-in item) 0) (reset-quality item)
+            :else (inc-quality item)))))
+
+(defrecord AgedBrieItem [name sell-in quality]
+  Item
+  (update [this] (inc-quality (dec-sell-in this))))
+
+(defrecord SulfurasItem [name sell-in quality]
+  Item
+  (update [this]
+    (if (< (:sell-in item) 0)
+      (dec-quality item 2)
+      (dec-quality item))))
 
 (defn update-quality
   [items]
@@ -59,7 +61,10 @@
 
 (defn item
   [item-name sell-in quality]
-  (RegularItem. item-name sell-in quality))
+  (cond (backstage-passes? item-name) (BackstagePassesItem. item-name sell-in quality)
+        (aged-brie? item-name) (AgedBrieItem. item-name sell-in quality)
+        (sulfuras? item-name) (SulfurasItem. item-name sell-in quality)
+        :else (RegularItem. item-name sell-in quality)))
 
 (defn update-current-inventory
   []
