@@ -2,8 +2,6 @@
   (:require [midje.sweet :refer :all]
             [gilded-rose.core :refer [item update-quality]]))
 
-(def elixir (partial item "Elixir of the Mongoose"))
-(def dexterity (partial item "+5 Dexterity Vest"))
 (def aged-brie (partial item "Aged Brie"))
 (def sulfuras (partial item "Sulfuras, Hand of Ragnaros"))
 (def backstage-passes (partial item "Backstage passes to a TAFKAL80ETC concert"))
@@ -11,16 +9,14 @@
 (facts "about `update-quality`"
 
        (fact "it lowers both quality and sell-in"
-             (update-quality [(elixir 10 10)]) => [(elixir 9 9)]
-             (update-quality [(dexterity 10 10)]) => [(dexterity 9 9)])
+             (update-quality [(item "foo" 10 10)]) => [(item "foo" 9 9)])
 
        (fact "it never lowers quality below zero"
-               (update-quality [(elixir 10 0)]) => [(elixir 9 0)])
+               (update-quality [(item "foo" 10 0)]) => [(item "foo" 9 0)])
 
        (facts "when the sell-in date has passed"
               (fact "it lowers quality twice as fast"
-                    (update-quality [(dexterity 0 10)]) => [(dexterity -1 8)]
-                    (update-quality [(elixir 0 10)]) => [(elixir -1 8)]))
+                    (update-quality [(item "foo" 0 10)]) => [(item "foo" -1 8)]))
 
        (facts "when the item is Aged Brie"
               (fact "it increases quality"
