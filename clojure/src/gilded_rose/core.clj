@@ -31,15 +31,14 @@
 (defn update-quality-for-item
   [item]
   (cond
-    (< (:sell-in item) 0) (if (backstage-passes? item)
-                            (reset-quality item)
-                            (dec-quality item 2))
-    (or (aged-brie? item) (backstage-passes? item)) (if (and (backstage-passes? item) (>= (:sell-in item) 5) (< (:sell-in item) 10))
-                                                      (inc-quality item 2)
-                                                      (if (and (backstage-passes? item) (>= (:sell-in item) 0) (< (:sell-in item) 5))
-                                                        (inc-quality item 3)
-                                                        (inc-quality item)))
-    :else (dec-quality item)))
+    (backstage-passes? item) (cond (and (>= (:sell-in item) 5) (< (:sell-in item) 10)) (inc-quality item 2)
+                                   (and (>= (:sell-in item) 0) (< (:sell-in item) 5)) (inc-quality item 3)
+                                   (< (:sell-in item) 0) (reset-quality item)
+                                   :else (inc-quality item))
+    (aged-brie? item) (inc-quality item)
+    :else (if (< (:sell-in item) 0)
+            (dec-quality item 2)
+            (dec-quality item))))
 
 (defn update-sell-in-for-item
   [item]
