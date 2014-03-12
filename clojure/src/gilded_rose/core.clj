@@ -1,9 +1,5 @@
 (ns gilded-rose.core)
 
-(defn backstage-passes? [name] (= name "Backstage passes to a TAFKAL80ETC concert"))
-(defn aged-brie? [name] (= name "Aged Brie"))
-(defn sulfuras? [name] (= name "Sulfuras, Hand of Ragnaros"))
-
 (defn dec-quality
   ([item]
    (dec-quality item 1))
@@ -66,9 +62,9 @@
 
 (defn item
   [item-name sell-in quality]
-  (cond (backstage-passes? item-name) (BackstagePassesItem. item-name sell-in quality)
-        (aged-brie? item-name) (AgedBrieItem. item-name sell-in quality)
-        (sulfuras? item-name) (SulfurasItem. item-name sell-in quality)
+  (cond (= item-name "Backstage passes to a TAFKAL80ETC concert") (BackstagePassesItem. item-name sell-in quality)
+        (= item-name "Aged Brie") (AgedBrieItem. item-name sell-in quality)
+        (= item-name "Sulfuras, Hand of Ragnaros") (SulfurasItem. item-name sell-in quality)
         :else (RegularItem. item-name sell-in quality)))
 
 (defn update-current-inventory
