@@ -14,7 +14,7 @@
              (update-quality [(elixir 10 10)]) => [(elixir 9 9)]
              (update-quality [(dexterity 10 10)]) => [(dexterity 9 9)])
 
-       #_(fact "it never lowers quality below zero"
+       (fact "it never lowers quality below zero"
                (update-quality [(elixir 10 0)]) => [(elixir 9 0)])
 
        (facts "when the sell-in date has passed"
