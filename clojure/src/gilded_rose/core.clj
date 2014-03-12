@@ -25,39 +25,44 @@
   (merge item {:sell-in (dec (:sell-in item))}))
 
 (defprotocol Item
-  (update [this]))
+  (update-item-quality [this])
+  (update-item-sell-in [this]))
 
 (defrecord RegularItem [name sell-in quality]
   Item
-  (update [this]
-    (let [item (dec-sell-in this)]
-      (if (< (:sell-in item) 0)
-        (dec-quality item 2)
-        (dec-quality item)))))
+  (update-item-quality [this]
+    (if (< (:sell-in this) 0)
+      (dec-quality this 2)
+      (dec-quality this)))
+  (update-item-sell-in [this]
+    (dec-sell-in this)))
 
 (defrecord BackstagePassesItem [name sell-in quality]
   Item
-  (update [this]
-    (let [item (dec-sell-in this)]
-      (cond (and (>= (:sell-in item) 5) (< (:sell-in item) 10)) (inc-quality item 2)
-            (and (>= (:sell-in item) 0) (< (:sell-in item) 5)) (inc-quality item 3)
-            (< (:sell-in item) 0) (reset-quality item)
-            :else (inc-quality item)))))
+  (update-item-quality [this]
+    (cond (and (>= (:sell-in this) 5) (< (:sell-in this) 10)) (inc-quality this 2)
+          (and (>= (:sell-in this) 0) (< (:sell-in this) 5)) (inc-quality this 3)
+          (< (:sell-in this) 0) (reset-quality this)
+          :else (inc-quality this)))
+  (update-item-sell-in [this]
+    (dec-sell-in this)))
 
 (defrecord AgedBrieItem [name sell-in quality]
   Item
-  (update [this] (inc-quality (dec-sell-in this))))
+  (update-item-quality [this] (inc-quality this))
+  (update-item-sell-in [this] (dec-sell-in this)))
 
 (defrecord SulfurasItem [name sell-in quality]
   Item
-  (update [this]
-    (if (< (:sell-in item) 0)
-      (dec-quality item 2)
-      (dec-quality item))))
+  (update-item-quality [this]
+    (if (< (:sell-in this) 0)
+      (dec-quality this 2)
+      (dec-quality this)))
+  (update-item-sell-in [this]))
 
 (defn update-quality
   [items]
-  (map update items))
+  (map (comp update-item-quality update-item-sell-in) items))
 
 (defn item
   [item-name sell-in quality]
