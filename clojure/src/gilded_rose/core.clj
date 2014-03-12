@@ -1,5 +1,11 @@
 (ns gilded-rose.core)
 
+(def backstage-passes? (partial has-name? "Backstage passes to a TAFKAL80ETC concert"))
+(def elixir? (partial has-name? "Elixir of the Mongoose"))
+(def dexterity? (partial has-name? "+5 Dexterity Vest"))
+(def aged-brie? (partial has-name? "Aged Brie"))
+(def sulfuras? (partial has-name? "Sulfuras, Hand of Ragnaros"))
+
 (defn dec-quality
   ([item]
    (dec-quality item 1))
@@ -23,12 +29,6 @@
 (defn has-name?
   [name item]
   (= name (:name item)))
-
-(def backstage-passes? (partial has-name? "Backstage passes to a TAFKAL80ETC concert"))
-(def elixir? (partial has-name? "Elixir of the Mongoose"))
-(def dexterity? (partial has-name? "+5 Dexterity Vest"))
-(def aged-brie? (partial has-name? "Aged Brie"))
-(def sulfuras? (partial has-name? "Sulfuras, Hand of Ragnaros"))
 
 (defn update-quality
   [items]
