@@ -1,8 +1,24 @@
 (ns gilded-rose.core)
 
 (defn dec-quality
+  ([item]
+   (dec-quality item 1))
+  ([item times]
+   (merge item {:quality (max 0 (- (:quality item) times))})))
+
+(defn inc-quality
+  ([item]
+   (inc-quality item 1))
+  ([item times]
+   (merge item {:quality (+ (:quality item) times)})))
+
+(defn reset-quality
   [item]
-  (merge item {:quality (max 0 (dec (:quality item)))}))
+  (merge item {:quality 0}))
+
+(defn dec-sell-in
+  [item]
+  (merge item {:sell-in (dec (:sell-in item))}))
 
 (defn has-name?
   [name item]
@@ -18,24 +34,24 @@
   [items]
   (map
     (fn [item] (cond
-                 (and (< (:sell-in item) 0) (backstage-passes? item)) (merge item {:quality 0})
+                 (and (< (:sell-in item) 0) (backstage-passes? item)) (reset-quality item)
                  (or (aged-brie? item) (backstage-passes? item)) (if (and (backstage-passes? item) (>= (:sell-in item) 5) (< (:sell-in item) 10))
-                                                                                                                  (merge item {:quality (inc (inc (:quality item)))})
+                                                                                                                  (inc-quality item 2)
                                                                                                                   (if (and (backstage-passes? item) (>= (:sell-in item) 0) (< (:sell-in item) 5))
-                                                                                                                    (merge item {:quality (inc (inc (inc (:quality item))))})
+                                                                                                                    (inc-quality item 3)
                                                                                                                     (if (< (:quality item) 50)
-                                                                                                                      (merge item {:quality (inc (:quality item))})
+                                                                                                                      (inc-quality item)
                                                                                                                       item)))
                  (< (:sell-in item) 0) (if (backstage-passes? item)
-                                         (merge item {:quality 0})
+                                         (reset-quality item)
                                          (if (or (dexterity? item) (elixir? item))
-                                           (merge item {:quality (- (:quality item) 2)})
+                                           (dec-quality item 2)
                                            item))
                  (or (dexterity? item) (elixir? item)) (dec-quality item)
                  :else item))
     (map (fn [item]
            (if (not (sulfuras? item))
-             (merge item {:sell-in (dec (:sell-in item))})
+             (dec-sell-in item)
              item))
          items)))
 
