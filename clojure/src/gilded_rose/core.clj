@@ -14,7 +14,7 @@
   ([item]
    (inc-quality item 1))
   ([item times]
-   (merge item {:quality (+ (:quality item) times)})))
+   (merge item {:quality (min 50 (+ (:quality item) times))})))
 
 (defn reset-quality
   [item]
@@ -38,9 +38,7 @@
                                                       (inc-quality item 2)
                                                       (if (and (backstage-passes? item) (>= (:sell-in item) 0) (< (:sell-in item) 5))
                                                         (inc-quality item 3)
-                                                        (if (< (:quality item) 50)
-                                                          (inc-quality item)
-                                                          item)))
+                                                        (inc-quality item)))
     :else (dec-quality item)))
 
 (defn update-sell-in-for-item
