@@ -1,5 +1,9 @@
 (ns gilded-rose.core)
 
+(defn has-name?
+  [name item]
+  (= name (:name item)))
+
 (def backstage-passes? (partial has-name? "Backstage passes to a TAFKAL80ETC concert"))
 (def aged-brie? (partial has-name? "Aged Brie"))
 (def sulfuras? (partial has-name? "Sulfuras, Hand of Ragnaros"))
@@ -23,10 +27,6 @@
 (defn dec-sell-in
   [item]
   (merge item {:sell-in (dec (:sell-in item))}))
-
-(defn has-name?
-  [name item]
-  (= name (:name item)))
 
 (defn update-quality-for-item
   [item]
