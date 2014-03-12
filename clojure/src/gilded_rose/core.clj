@@ -30,30 +30,34 @@
   [name item]
   (= name (:name item)))
 
+(defn update-quality-for-item
+  [item]
+  (cond
+    (and (< (:sell-in item) 0) (backstage-passes? item)) (reset-quality item)
+    (or (aged-brie? item) (backstage-passes? item)) (if (and (backstage-passes? item) (>= (:sell-in item) 5) (< (:sell-in item) 10))
+                                                      (inc-quality item 2)
+                                                      (if (and (backstage-passes? item) (>= (:sell-in item) 0) (< (:sell-in item) 5))
+                                                        (inc-quality item 3)
+                                                        (if (< (:quality item) 50)
+                                                          (inc-quality item)
+                                                          item)))
+    (< (:sell-in item) 0) (if (backstage-passes? item)
+                            (reset-quality item)
+                            (if (or (dexterity? item) (elixir? item))
+                              (dec-quality item 2)
+                              item))
+    (or (dexterity? item) (elixir? item)) (dec-quality item)
+    :else item))
+
+(defn update-sell-in-for-item
+  [item]
+  (if (not (sulfuras? item))
+    (dec-sell-in item)
+    item))
+
 (defn update-quality
   [items]
-  (map
-    (fn [item] (cond
-                 (and (< (:sell-in item) 0) (backstage-passes? item)) (reset-quality item)
-                 (or (aged-brie? item) (backstage-passes? item)) (if (and (backstage-passes? item) (>= (:sell-in item) 5) (< (:sell-in item) 10))
-                                                                                                                  (inc-quality item 2)
-                                                                                                                  (if (and (backstage-passes? item) (>= (:sell-in item) 0) (< (:sell-in item) 5))
-                                                                                                                    (inc-quality item 3)
-                                                                                                                    (if (< (:quality item) 50)
-                                                                                                                      (inc-quality item)
-                                                                                                                      item)))
-                 (< (:sell-in item) 0) (if (backstage-passes? item)
-                                         (reset-quality item)
-                                         (if (or (dexterity? item) (elixir? item))
-                                           (dec-quality item 2)
-                                           item))
-                 (or (dexterity? item) (elixir? item)) (dec-quality item)
-                 :else item))
-    (map (fn [item]
-           (if (not (sulfuras? item))
-             (dec-sell-in item)
-             item))
-         items)))
+  (map (comp update-quality-for-item update-sell-in-for-item) items))
 
 (defn item
   [item-name, sell-in, quality]
