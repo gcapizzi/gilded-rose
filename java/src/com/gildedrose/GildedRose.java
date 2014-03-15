@@ -9,8 +9,7 @@ class GildedRose {
 
     public void updateQuality() {
         for (Item item : items) {
-            if (!item.isAgedBrie()
-                    && !item.isBackstagePasses()) {
+            if (!item.isAgedBrie() && !item.isBackstagePasses()) {
                 if (item.quality > 0) {
                     if (!item.isSulfuras()) {
                         item.decrementQuality();
