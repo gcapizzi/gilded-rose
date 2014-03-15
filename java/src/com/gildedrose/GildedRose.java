@@ -14,21 +14,15 @@ class GildedRose {
                     item.decrementQuality();
                 }
             } else {
-                if (item.quality < 50) {
-                    item.quality = item.quality + 1;
+                item.incrementQuality();
 
-                    if (item.isBackstagePasses()) {
-                        if (item.sellIn < 11) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
-                        }
+                if (item.isBackstagePasses()) {
+                    if (item.sellIn < 11) {
+                        item.incrementQuality();
+                    }
 
-                        if (item.sellIn < 6) {
-                            if (item.quality < 50) {
-                                item.quality = item.quality + 1;
-                            }
-                        }
+                    if (item.sellIn < 6) {
+                        item.incrementQuality();
                     }
                 }
             }
@@ -47,9 +41,7 @@ class GildedRose {
                         item.decrementQuality();
                     }
                 } else {
-                    if (item.quality < 50) {
-                        item.quality = item.quality + 1;
-                    }
+                    item.incrementQuality();
                 }
             }
         }
