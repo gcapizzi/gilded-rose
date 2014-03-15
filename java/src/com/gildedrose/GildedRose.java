@@ -10,9 +10,7 @@ class GildedRose {
     public void updateQuality() {
         for (Item item : items) {
             if (!item.isAgedBrie() && !item.isBackstagePasses()) {
-                if (!item.isSulfuras()) {
-                    item.decrementQuality();
-                }
+                item.decrementQuality();
             } else {
                 item.incrementQuality();
 
@@ -34,9 +32,7 @@ class GildedRose {
             if (item.sellIn < 0) {
                 if (!item.isAgedBrie()) {
                     if (!item.isBackstagePasses()) {
-                        if (!item.isSulfuras()) {
-                            item.decrementQuality();
-                        }
+                        item.decrementQuality();
                     } else {
                         item.decrementQuality();
                     }
