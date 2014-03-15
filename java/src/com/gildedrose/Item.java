@@ -23,10 +23,6 @@ public class Item {
         return name.equals(AGED_BRIE);
     }
 
-    boolean isSulfuras() {
-        return name.equals(SULFURAS);
-    }
-
     boolean isBackstagePasses() {
         return name.equals(BACKSTAGE_PASSES);
     }
@@ -48,5 +44,9 @@ public class Item {
         if (name == BACKSTAGE_PASSES) return new BackstagePassesItem(name, sellIn, quality);
         if (name == SULFURAS) return new SulfurasItem(name, sellIn, quality);
         return new Item(name, sellIn, quality);
+    }
+
+    void decrementSellIn() {
+        sellIn = sellIn - 1;
     }
 }

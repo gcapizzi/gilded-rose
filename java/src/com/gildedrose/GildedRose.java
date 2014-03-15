@@ -25,9 +25,7 @@ class GildedRose {
                 }
             }
 
-            if (!item.isSulfuras()) {
-                item.sellIn = item.sellIn - 1;
-            }
+            item.decrementSellIn();
 
             if (item.sellIn < 0) {
                 if (!item.isAgedBrie()) {

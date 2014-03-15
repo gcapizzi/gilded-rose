@@ -9,4 +9,9 @@ public class SulfurasItem extends Item {
     public void decrementQuality() {
         // nope
     }
+
+    @Override
+    public void decrementSellIn() {
+        // nope
+    }
 }
