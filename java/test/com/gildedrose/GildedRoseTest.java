@@ -2,14 +2,14 @@ package com.gildedrose;
 
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class GildedRoseTest {
 
     @Test
     public void testUpdateQuality() {
-        Item item = new Item("foo", 10, 10);
+        Item item = Item.from("foo", 10, 10);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -20,7 +20,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenSellInHasPassedLowersQualityTwiceAsFast() {
-        Item item = new Item("foo", 0, 10);
+        Item item = Item.from("foo", 0, 10);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -31,7 +31,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenQualityIsZeroKeepsItZero() {
-        Item item = new Item("foo", 10, 0);
+        Item item = Item.from("foo", 10, 0);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -42,7 +42,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenTheItemIsAgedBrieIncreasesQuality() {
-        Item item = new Item("Aged Brie", 10, 10);
+        Item item = Item.from("Aged Brie", 10, 10);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -53,7 +53,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenQualityIsFiftyKeepsItFifty() {
-        Item item = new Item("Aged Brie", 10, 50);
+        Item item = Item.from("Aged Brie", 10, 50);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -64,7 +64,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenTheItemIsSulfurasDoesntChangeSellInOrQuality() {
-        Item item = new Item("Sulfuras, Hand of Ragnaros", 10, 10);
+        Item item = Item.from("Sulfuras, Hand of Ragnaros", 10, 10);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();
@@ -75,7 +75,7 @@ public class GildedRoseTest {
 
     @Test
     public void testUpdateQualityWhenTheItemIsBackstagePassesIncreasesQuality() {
-        Item item = new Item("Backstage passes to a TAFKAL80ETC concert", 20, 10);
+        Item item = Item.from("Backstage passes to a TAFKAL80ETC concert", 20, 10);
         GildedRose gildedRose = new GildedRose(new Item[]{item});
 
         gildedRose.updateQuality();

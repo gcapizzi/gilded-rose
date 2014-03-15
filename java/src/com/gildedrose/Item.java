@@ -42,4 +42,11 @@ public class Item {
             quality = quality + 1;
         }
     }
+
+    public static Item from(String name, int sellIn, int quality) {
+        if (name == AGED_BRIE) return new AgedBrieItem(name, sellIn, quality);
+        if (name == BACKSTAGE_PASSES) return new BackstagePassesItem(name, sellIn, quality);
+        if (name == SULFURAS) return new SulfurasItem(name, sellIn, quality);
+        return new Item(name, sellIn, quality);
+    }
 }
