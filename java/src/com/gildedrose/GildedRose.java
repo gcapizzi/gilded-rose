@@ -13,7 +13,7 @@ class GildedRose {
                     && !item.isBackstagePasses()) {
                 if (item.quality > 0) {
                     if (!item.isSulfuras()) {
-                        item.quality = item.quality - 1;
+                        item.decrementQuality();
                     }
                 }
             } else {
@@ -45,11 +45,11 @@ class GildedRose {
                     if (!item.isBackstagePasses()) {
                         if (item.quality > 0) {
                             if (!item.isSulfuras()) {
-                                item.quality = item.quality - 1;
+                                item.decrementQuality();
                             }
                         }
                     } else {
-                        item.quality = item.quality - item.quality;
+                        item.decrementQuality();
                     }
                 } else {
                     if (item.quality < 50) {

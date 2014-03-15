@@ -30,4 +30,8 @@ public class Item {
     boolean isBackstagePasses() {
         return name.equals(BACKSTAGE_PASSES);
     }
+
+    public void decrementQuality() {
+        quality -= 1;
+    }
 }
