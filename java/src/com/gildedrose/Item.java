@@ -53,4 +53,10 @@ public class Item {
     public void decrementSellIn() {
         sellIn = sellIn - 1;
     }
+
+    public void updateQuality() {
+        decrementSellIn();
+        decrementQuality();
+        if (sellIn < 0) { decrementQuality(); }
+    }
 }
