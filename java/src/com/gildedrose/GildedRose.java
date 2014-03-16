@@ -29,11 +29,7 @@ class GildedRose {
 
             if (item.sellIn < 0) {
                 if (!item.isAgedBrie()) {
-                    if (!item.isBackstagePasses()) {
-                        item.decrementQuality();
-                    } else {
-                        item.decrementQuality();
-                    }
+                    item.decrementQuality();
                 } else {
                     item.incrementQuality();
                 }
