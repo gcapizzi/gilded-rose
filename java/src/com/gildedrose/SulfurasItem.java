@@ -6,12 +6,7 @@ public class SulfurasItem extends Item {
     }
 
     @Override
-    public void decrementQuality() {
-        // nope
-    }
-
-    @Override
-    public void decrementSellIn() {
+    public void updateQuality() {
         // nope
     }
 }

@@ -19,30 +19,6 @@ public class Item {
         return this.name + ", " + this.sellIn + ", " + this.quality;
     }
 
-    boolean isAgedBrie() {
-        return name.equals(AGED_BRIE);
-    }
-
-    boolean isBackstagePasses() {
-        return name.equals(BACKSTAGE_PASSES);
-    }
-
-    public void decrementQuality() {
-        if (quality > 0) {
-            quality -= 1;
-        }
-    }
-
-    public void incrementQuality() {
-        if (quality < 50) {
-            quality = quality + 1;
-        }
-    }
-
-    public void resetQuality() {
-        quality = 0;
-    }
-
     public static Item from(String name, int sellIn, int quality) {
         if (name == AGED_BRIE) return new AgedBrieItem(name, sellIn, quality);
         if (name == BACKSTAGE_PASSES) return new BackstagePassesItem(name, sellIn, quality);
@@ -50,13 +26,29 @@ public class Item {
         return new Item(name, sellIn, quality);
     }
 
-    public void decrementSellIn() {
-        sellIn = sellIn - 1;
-    }
-
     public void updateQuality() {
         decrementSellIn();
         decrementQuality();
         if (sellIn < 0) { decrementQuality(); }
+    }
+
+    protected void decrementQuality() {
+        if (quality > 0) {
+            quality -= 1;
+        }
+    }
+
+    protected void incrementQuality() {
+        if (quality < 50) {
+            quality = quality + 1;
+        }
+    }
+
+    protected void resetQuality() {
+        quality = 0;
+    }
+
+    protected void decrementSellIn() {
+        sellIn = sellIn - 1;
     }
 }
