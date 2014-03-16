@@ -39,6 +39,10 @@ public class Item {
         }
     }
 
+    public void resetQuality() {
+        quality = 0;
+    }
+
     public static Item from(String name, int sellIn, int quality) {
         if (name == AGED_BRIE) return new AgedBrieItem(name, sellIn, quality);
         if (name == BACKSTAGE_PASSES) return new BackstagePassesItem(name, sellIn, quality);

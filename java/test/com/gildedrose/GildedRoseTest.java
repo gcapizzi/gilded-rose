@@ -92,5 +92,10 @@ public class GildedRoseTest {
         gildedRose.updateQuality();
 
         assertThat(item.quality, equalTo(16));
+
+        item.sellIn = 0;
+        gildedRose.updateQuality();
+
+        assertThat(item.quality, equalTo(0));
     }
 }

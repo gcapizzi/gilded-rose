@@ -18,7 +18,7 @@ class GildedRose {
                 item.incrementQuality();
                 if (item.sellIn < 11) { item.incrementQuality(); }
                 if (item.sellIn < 6)  { item.incrementQuality(); }
-                if (item.sellIn < 0)  { item.decrementQuality(); }
+                if (item.sellIn < 0)  { item.resetQuality(); }
             } else {
                 item.decrementQuality();
                 if (item.sellIn < 0) { item.decrementQuality(); }
