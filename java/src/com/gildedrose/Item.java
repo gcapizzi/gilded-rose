@@ -33,7 +33,7 @@ public class Item {
         }
     }
 
-    void incrementQuality() {
+    public void incrementQuality() {
         if (quality < 50) {
             quality = quality + 1;
         }
@@ -50,7 +50,7 @@ public class Item {
         return new Item(name, sellIn, quality);
     }
 
-    void decrementSellIn() {
+    public void decrementSellIn() {
         sellIn = sellIn - 1;
     }
 }
