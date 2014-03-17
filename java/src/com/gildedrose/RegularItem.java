@@ -1,7 +1,6 @@
 package com.gildedrose;
 
 public class RegularItem implements Item {
-
     protected String name;
     protected int sellIn;
     protected int quality;
@@ -10,17 +9,6 @@ public class RegularItem implements Item {
         this.name = name;
         this.sellIn = sellIn;
         this.quality = quality;
-    }
-
-    public String toString() {
-        return this.name + ", " + this.sellIn + ", " + this.quality;
-    }
-
-    @Override
-    public void updateQuality() {
-        decrementSellIn();
-        decrementQuality();
-        if (sellIn < 0) { decrementQuality(); }
     }
 
     @Override
@@ -38,10 +26,21 @@ public class RegularItem implements Item {
         return quality;
     }
 
+    @Override
+    public void updateQuality() {
+        decrementSellIn();
+        decrementQuality();
+        if (sellIn < 0) { decrementQuality(); }
+    }
+
     protected void decrementQuality() {
         if (quality > 0) {
             quality -= 1;
         }
+    }
+
+    public String toString() {
+        return this.name + ", " + this.sellIn + ", " + this.quality;
     }
 
     protected void incrementQuality() {
