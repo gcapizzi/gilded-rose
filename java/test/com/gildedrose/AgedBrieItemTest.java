@@ -12,8 +12,8 @@ public class AgedBrieItemTest {
 
         item.updateQuality();
 
-        assertThat(item.sellIn, equalTo(9));
-        assertThat(item.quality, equalTo(11));
+        assertThat(item.getSellIn(), equalTo(9));
+        assertThat(item.getQuality(), equalTo(11));
     }
 
     @Test
@@ -22,7 +22,7 @@ public class AgedBrieItemTest {
 
         item.updateQuality();
 
-        assertThat(item.sellIn, equalTo(9));
-        assertThat(item.quality, equalTo(50));
+        assertThat(item.getSellIn(), equalTo(9));
+        assertThat(item.getQuality(), equalTo(50));
     }
 }

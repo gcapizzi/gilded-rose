@@ -12,8 +12,8 @@ public class BackstagePassesItemTest {
 
         item.updateQuality();
 
-        assertThat(item.sellIn, equalTo(19));
-        assertThat(item.quality, equalTo(11));
+        assertThat(item.getSellIn(), equalTo(19));
+        assertThat(item.getQuality(), equalTo(11));
     }
 
     @Test
@@ -22,7 +22,7 @@ public class BackstagePassesItemTest {
 
         item.updateQuality();
 
-        assertThat(item.quality, equalTo(12));
+        assertThat(item.getQuality(), equalTo(12));
     }
 
     @Test
@@ -31,7 +31,7 @@ public class BackstagePassesItemTest {
 
         item.updateQuality();
 
-        assertThat(item.quality, equalTo(13));
+        assertThat(item.getQuality(), equalTo(13));
     }
 
     @Test
@@ -40,6 +40,6 @@ public class BackstagePassesItemTest {
 
         item.updateQuality();
 
-        assertThat(item.quality, equalTo(0));
+        assertThat(item.getQuality(), equalTo(0));
     }
 }

@@ -12,7 +12,7 @@ public class SulfurasItemTest {
 
         item.updateQuality();
 
-        assertThat(item.sellIn, equalTo(10));
-        assertThat(item.quality, equalTo(10));
+        assertThat(item.getSellIn(), equalTo(10));
+        assertThat(item.getQuality(), equalTo(10));
     }
 }
